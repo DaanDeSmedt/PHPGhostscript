@@ -1,0 +1,31 @@
+{
+    "name": "daandesmedt/phpghostscript",
+    "description": "A PHP wrapper for Ghostscript (An interpreter for the PostScript language and for PDF). Export PDF / PS to PDF or various image types (jpeg / png). Easy to use and OOP interfaced.",
+    "type": "library",
+    "license": "MIT",
+	"keywords": ["HTML","ghostscript","wrapper","pdf","php","jpg","png","postscript"],
+    "authors": [
+        {
+            "name": "Daan De Smedt",
+            "email": "daan.de.smedt@hotmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+	"autoload": {
+        "psr-4": {
+            "daandesmedt\\PHPGhostscript\\": "src/PHPGhostscript"
+        }
+    },    
+    "autoload-dev": {
+        "psr-4": {
+            "daandesmedt\\Tests\\PHPGhostscript\\": "tests/PHPGhostscript"
+        }
+    },
+	"require-dev": {
+		"phpunit/phpunit": "^8.3"
+    },
+    "require": {
+        "php": ">= 7.0.0",
+        "mikehaertl/php-shellcommand": "^1.2"
+    }
+}
