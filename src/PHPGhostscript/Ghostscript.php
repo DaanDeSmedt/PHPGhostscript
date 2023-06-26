@@ -15,7 +15,7 @@ namespace daandesmedt\PHPGhostscript;
 use mikehaertl\shellcommand\Command;
 use daandesmedt\PHPGhostscript\Devices\DeviceInterface;
 use daandesmedt\PHPGhostscript\Devices\DeviceTypes;
-
+use daandesmedt\PHPGhostscript\Devices\JPEG;
 
 class Ghostscript
 {
@@ -91,7 +91,7 @@ class Ghostscript
      * 
      * @var string[]
      */
-    private $files;
+    private $files = [];
 
     /**
      * Output file
@@ -141,7 +141,7 @@ class Ghostscript
             $this->setBinaryPath($binaryPath);
         }
 
-        $this->setDevice(DeviceTypes::JPEG);
+        $this->setDevice(new JPEG);
     }
 
 
@@ -332,7 +332,7 @@ class Ghostscript
             }
         }
 
-        $this->files = $file;
+        $this->files[] = $file;
         return $this;
     }
 
