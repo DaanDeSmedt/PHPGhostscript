@@ -87,11 +87,11 @@ class Ghostscript
     ];
 
     /**
-     * Current file
+     * Current files
      * 
-     * @var string
+     * @var string[]
      */
-    private $file;
+    private $files;
 
     /**
      * Output file
@@ -332,7 +332,7 @@ class Ghostscript
             }
         }
 
-        $this->file = $file;
+        $this->files = $file;
         return $this;
     }
 
@@ -527,7 +527,9 @@ class Ghostscript
             $command->addArg($arg);
         }
 
-        $command->addArg(' ' . $this->file);
+        foreach ($this->files as $file) {
+            $command->addArg(' ' . $file);
+        }
 
         if ($command->execute() && $command->getExitCode() == 0) {
             return true;
