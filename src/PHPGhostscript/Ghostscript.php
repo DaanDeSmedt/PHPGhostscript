@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 /**
@@ -338,13 +338,13 @@ class Ghostscript
 
 
     /**
-     * Get inputfile
+     * Get inputfiles
      *
-     * @return string
+     * @return array
      */
-    public function getInputFile() : string
+    public function getInputFile() : array
     {
-        return $this->file;
+        return $this->files;
     }
 
 
@@ -537,5 +537,4 @@ class Ghostscript
             throw new GhostscriptException('Ghostscript was unable to transcode');
         }
     }
-
 }

@@ -3,7 +3,10 @@ PHPGhostscript
 
 A PHP wrapper for [Ghostscript](https://www.ghostscript.com) ; an interpreter for PostScript™ and Portable Document Format (PDF) files.
 
-Use `PHPGhostscript` for rendering PDF / PostScript™ files to various image types (jpeg / png) or export to PDF with page range (single page / multipage). 
+Use `PHPGhostscript` for rendering PDF / PostScript™ files to various image types (jpeg / png) or export to PDF with page range (single page / multipage).
+
+Setting multiple input files merge them.
+
 Easy to use and OOP interfaced.
 
 
