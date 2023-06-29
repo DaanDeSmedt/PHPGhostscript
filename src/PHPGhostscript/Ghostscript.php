@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 /**
@@ -15,7 +15,7 @@ namespace daandesmedt\PHPGhostscript;
 use mikehaertl\shellcommand\Command;
 use daandesmedt\PHPGhostscript\Devices\DeviceInterface;
 use daandesmedt\PHPGhostscript\Devices\DeviceTypes;
-
+use daandesmedt\PHPGhostscript\Devices\JPEG;
 
 class Ghostscript
 {
@@ -87,11 +87,11 @@ class Ghostscript
     ];
 
     /**
-     * Current file
+     * Current files
      * 
-     * @var string
+     * @var string[]
      */
-    private $file;
+    private $files = [];
 
     /**
      * Output file
@@ -141,7 +141,7 @@ class Ghostscript
             $this->setBinaryPath($binaryPath);
         }
 
-        $this->setDevice(DeviceTypes::JPEG);
+        $this->setDevice(new JPEG);
     }
 
 
@@ -332,21 +332,31 @@ class Ghostscript
             }
         }
 
-        $this->file = $file;
+        $this->files[] = $file;
         return $this;
     }
 
 
     /**
-     * Get inputfile
+     * Get inputfiles
      *
-     * @return string
+     * @return array
      */
-    public function getInputFile() : string
+    public function getInputFiles() : array
     {
-        return $this->file;
+        return $this->files;
     }
 
+    /**
+     * Clear inputfiles
+     *
+     * @return self
+     */
+    public function clearInputFiles() : Ghostscript
+    {
+        $this->files = [];
+        return $this;
+    }
 
     /**
      * Set output file
@@ -527,7 +537,9 @@ class Ghostscript
             $command->addArg($arg);
         }
 
-        $command->addArg(' ' . $this->file);
+        foreach ($this->files as $file) {
+            $command->addArg(' ' . $file);
+        }
 
         if ($command->execute() && $command->getExitCode() == 0) {
             return true;
@@ -535,5 +547,4 @@ class Ghostscript
             throw new GhostscriptException('Ghostscript was unable to transcode');
         }
     }
-
 }

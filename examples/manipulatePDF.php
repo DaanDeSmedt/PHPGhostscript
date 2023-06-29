@@ -15,6 +15,8 @@ $ghostscript
 
     ->setOutputFile(__DIR__ . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR . 'pdf_%2d.pdf')
     ->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'MultiPageHorizontal.pdf')
+    // Multipe inputs -> merged output
+    // ->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'MultiPageVertical.pdf')
 
     ->setPageStart(2)
     ->setPageEnd(3)

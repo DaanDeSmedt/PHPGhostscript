@@ -93,15 +93,16 @@ final class PHPGhostscriptTest extends TestCase
     public function testInputFile()
     {
         $ghostscript = new Ghostscript();
-        $ghostscript->setInputFile( __DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps');
-        $this->assertEquals(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps', $ghostscript->getInputFile());
-
+        $ghostscript->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps');
+        $this->assertEquals([__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps'], $ghostscript->getInputFiles());
+        $ghostscript->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps');
+        $this->assertEquals([__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps', __DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps'], $ghostscript->getInputFiles());
     }
 
     public function testOutputFile()
-    {   
+    {
         $ghostscript = new Ghostscript();
-        $ghostscript->setOutputFile( __DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps');
+        $ghostscript->setOutputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps');
         $this->assertEquals(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps', $ghostscript->getOutputFile());
     }
 
@@ -109,17 +110,17 @@ final class PHPGhostscriptTest extends TestCase
     {
         $ghostscript = new Ghostscript();
 
-        $this->assertEquals(1,$ghostscript->getPageStart());
+        $this->assertEquals(1, $ghostscript->getPageStart());
         $ghostscript->setPageStart(20);
-        $this->assertEquals(20,$ghostscript->getPageStart());
+        $this->assertEquals(20, $ghostscript->getPageStart());
 
-        $this->assertEquals(1,$ghostscript->getPageEnd());
+        $this->assertEquals(1, $ghostscript->getPageEnd());
         $ghostscript->setPageEnd(99);
-        $this->assertEquals(99,$ghostscript->getPageEnd());
+        $this->assertEquals(99, $ghostscript->getPageEnd());
 
-        $ghostscript->setPages(44,88);
-        $this->assertEquals(44,$ghostscript->getPageStart());
-        $this->assertEquals(88,$ghostscript->getPageEnd());
+        $ghostscript->setPages(44, 88);
+        $this->assertEquals(44, $ghostscript->getPageStart());
+        $this->assertEquals(88, $ghostscript->getPageEnd());
     }
 
     public function testSetBox()
@@ -127,13 +128,13 @@ final class PHPGhostscriptTest extends TestCase
         $ghostscript = new Ghostscript();
         $this->assertNull($ghostscript->getBox());
         $ghostscript->setBox(Ghostscript::BOX_CROP);
-        $this->assertEquals(Ghostscript::BOX_CROP,$ghostscript->getBox());
+        $this->assertEquals(Ghostscript::BOX_CROP, $ghostscript->getBox());
         $ghostscript->setBox(Ghostscript::BOX_ART);
-        $this->assertEquals(Ghostscript::BOX_ART,$ghostscript->getBox());
+        $this->assertEquals(Ghostscript::BOX_ART, $ghostscript->getBox());
         $ghostscript->setBox(Ghostscript::BOX_ART);
-        $this->assertEquals(Ghostscript::BOX_ART,$ghostscript->getBox());
+        $this->assertEquals(Ghostscript::BOX_ART, $ghostscript->getBox());
         $ghostscript->setBox(Ghostscript::BOX_BLEED);
-        $this->assertEquals(Ghostscript::BOX_BLEED,$ghostscript->getBox());
+        $this->assertEquals(Ghostscript::BOX_BLEED, $ghostscript->getBox());
         $ghostscript->setBox(Ghostscript::BOX_NONE);
         $this->assertNull($ghostscript->getBox());
         $ghostscript->setBox('BOX_NOT_HERE');
@@ -147,11 +148,36 @@ final class PHPGhostscriptTest extends TestCase
         $ghostscript
             ->setBinaryPath($this->binaryPath)
             ->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'MultiPageHorizontal.pdf')
-            ->setOutputFile($outputFile);       
+            ->setOutputFile($outputFile);
         $result = $ghostscript->render();
         $this->assertTrue(file_exists($outputFile));
         $this->assertEquals("image/jpeg", mime_content_type($outputFile));
         $this->assertTrue($result);
+    }
+
+    public function testMerging()
+    {
+        $outputFile = __DIR__ . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR . 'merge.pdf';
+        $ghostscript = new Ghostscript();
+        $ghostscript
+            ->setBinaryPath($this->binaryPath)
+            ->setDevice(DeviceTypes::PDF)
+            ->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'lorem.pdf')
+            ->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'ipsum.pdf')
+            ->setOutputFile($outputFile);
+        $result = $ghostscript->render();
+        $this->assertTrue(file_exists($outputFile));
+        $this->assertEquals("application/pdf", mime_content_type($outputFile));
+        $this->assertTrue($result);
+    }
+
+    public function testClearInputFiles()
+    {
+        $ghostscript = new Ghostscript();
+        $ghostscript->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps');
+        $this->assertEquals([__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps'], $ghostscript->getInputFiles());
+        $ghostscript->clearInputFiles();
+        $this->assertEquals([], $ghostscript->getInputFiles());
     }
 
 }
