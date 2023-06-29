@@ -342,11 +342,21 @@ class Ghostscript
      *
      * @return array
      */
-    public function getInputFile() : array
+    public function getInputFiles() : array
     {
         return $this->files;
     }
 
+    /**
+     * Clear inputfiles
+     *
+     * @return self
+     */
+    public function clearInputFiles() : Ghostscript
+    {
+        $this->files = [];
+        return $this;
+    }
 
     /**
      * Set output file

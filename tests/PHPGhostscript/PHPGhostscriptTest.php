@@ -94,7 +94,9 @@ final class PHPGhostscriptTest extends TestCase
     {
         $ghostscript = new Ghostscript();
         $ghostscript->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps');
-        $this->assertEquals([__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps'], $ghostscript->getInputFile());
+        $this->assertEquals([__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps'], $ghostscript->getInputFiles());
+        $ghostscript->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps');
+        $this->assertEquals([__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps', __DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps'], $ghostscript->getInputFiles());
     }
 
     public function testOutputFile()
@@ -168,4 +170,14 @@ final class PHPGhostscriptTest extends TestCase
         $this->assertEquals("application/pdf", mime_content_type($outputFile));
         $this->assertTrue($result);
     }
+
+    public function testClearInputFiles()
+    {
+        $ghostscript = new Ghostscript();
+        $ghostscript->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps');
+        $this->assertEquals([__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'Helicopter.ps'], $ghostscript->getInputFiles());
+        $ghostscript->clearInputFiles();
+        $this->assertEquals([], $ghostscript->getInputFiles());
+    }
+
 }
