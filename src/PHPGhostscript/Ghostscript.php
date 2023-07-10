@@ -102,17 +102,17 @@ class Ghostscript
 
     /**
      * Page start
-     * 
-     * @var int
+     *
+     * @var ?int
      */
-    private $pageStart = 1;
+    private $pageStart = null;
 
     /**
      * Page end
      * 
-     * @var int
+     * @var ?int
      */
-    private $pageEnd = 1;
+    private $pageEnd = null;
 
     /**
      * Box mode used for rendering
@@ -342,21 +342,11 @@ class Ghostscript
      *
      * @return array
      */
-    public function getInputFiles() : array
+    public function getInputFile() : array
     {
         return $this->files;
     }
 
-    /**
-     * Clear inputfiles
-     *
-     * @return self
-     */
-    public function clearInputFiles() : Ghostscript
-    {
-        $this->files = [];
-        return $this;
-    }
 
     /**
      * Set output file
@@ -390,7 +380,7 @@ class Ghostscript
      *
      * @return self
      */
-    public function setPageStart(int $page) : Ghostscript
+    public function setPageStart(?int $page): Ghostscript
     {
         $this->pageStart = $page;
         return $this;
@@ -402,7 +392,7 @@ class Ghostscript
      *
      * @return int $pageStart
      */
-    public function getPageStart() : int
+    public function getPageStart(): ?int
     {
         return $this->pageStart;
     }
@@ -415,7 +405,7 @@ class Ghostscript
      *
      * @return self
      */
-    public function setPageEnd(int $page) : Ghostscript
+    public function setPageEnd(?int $page): Ghostscript
     {
         $this->pageEnd = $page;
         return $this;
@@ -427,7 +417,7 @@ class Ghostscript
      *
      * @return int $pageEnd
      */
-    public function getPageEnd() : int
+    public function getPageEnd(): ?int
     {
         return $this->pageEnd;
     }
@@ -500,8 +490,8 @@ class Ghostscript
 
 
     /**
-     * Render 
-     * 
+     * Render
+     *
      * @throws GhostscriptException when transcode was unable to complete with success
      * @return boolean
      */
@@ -515,8 +505,14 @@ class Ghostscript
         $command->addArg('-dSAFER');
         $command->addArg('-dNOPLATFONTS');
         $command->addArg('-sOutputFile=' . $this->outputFile);
-        $command->addArg('-dFirstPage=' . $this->pageStart);
-        $command->addArg('-dLastPage=' . $this->pageEnd);
+
+        if ($this->pageStart !== null) {
+            $command->addArg('-dFirstPage=' . $this->pageStart);
+        }
+
+        if ($this->pageEnd !== null) {
+            $command->addArg('-dLastPage=' . $this->pageEnd);
+        }
 
         if (!$this->isVectorDevice()) {
             $command->addArg('-dTextAlphaBits=' . $this->getTextAntiAliasing());
