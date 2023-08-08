@@ -110,11 +110,11 @@ final class PHPGhostscriptTest extends TestCase
     {
         $ghostscript = new Ghostscript();
 
-        $this->assertEquals(1, $ghostscript->getPageStart());
+        $this->assertEquals(null, $ghostscript->getPageStart());
         $ghostscript->setPageStart(20);
         $this->assertEquals(20, $ghostscript->getPageStart());
 
-        $this->assertEquals(1, $ghostscript->getPageEnd());
+        $this->assertEquals(null, $ghostscript->getPageEnd());
         $ghostscript->setPageEnd(99);
         $this->assertEquals(99, $ghostscript->getPageEnd());
 
@@ -164,6 +164,22 @@ final class PHPGhostscriptTest extends TestCase
             ->setDevice(DeviceTypes::PDF)
             ->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'lorem.pdf')
             ->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'ipsum.pdf')
+            ->setOutputFile($outputFile);
+        $result = $ghostscript->render();
+        $this->assertTrue(file_exists($outputFile));
+        $this->assertEquals("application/pdf", mime_content_type($outputFile));
+        $this->assertTrue($result);
+    }
+
+    public function testMerging2()
+    {
+        $outputFile = __DIR__ . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR . 'merge2.pdf';
+        $ghostscript = new Ghostscript();
+        $ghostscript
+            ->setBinaryPath($this->binaryPath)
+            ->setDevice(DeviceTypes::PDF)
+            ->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'a2.pdf')
+            ->setInputFile(__DIR__ . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'b1.pdf')
             ->setOutputFile($outputFile);
         $result = $ghostscript->render();
         $this->assertTrue(file_exists($outputFile));
