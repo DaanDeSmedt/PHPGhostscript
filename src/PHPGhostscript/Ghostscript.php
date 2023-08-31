@@ -448,6 +448,19 @@ class Ghostscript
         return $this;
     }
 
+    /**
+     *  Clears the page range
+     *
+     * @return self
+     */
+    public function clearPageRange() : Ghostscript
+    {
+        $this->setPageStart(null);
+        $this->setPageEnd(null);
+        return $this;
+    }
+
+
 
     /**
      * Set the render box mode

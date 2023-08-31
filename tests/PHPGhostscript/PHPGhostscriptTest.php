@@ -171,6 +171,21 @@ final class PHPGhostscriptTest extends TestCase
         $this->assertTrue($result);
     }
 
+    public function testClearPageRange() {
+        $ghostscript = new Ghostscript();
+        $this->assertNull($ghostscript->getPageStart());
+        $this->assertNull($ghostscript->getPageEnd());
+        
+        $ghostscript->setPageStart(2);
+        $ghostscript->setPageEnd(10);
+        $this->assertEquals(2, $ghostscript->getPageStart());
+        $this->assertEquals(10, $ghostscript->getPageEnd());
+
+        $ghostscript->clearPageRange();
+        $this->assertNull($ghostscript->getPageStart());
+        $this->assertNull($ghostscript->getPageEnd());
+    }
+
     public function testMerging2()
     {
         $outputFile = __DIR__ . DIRECTORY_SEPARATOR . 'output' . DIRECTORY_SEPARATOR . 'merge2.pdf';

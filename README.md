@@ -170,6 +170,13 @@ $ghostscript->setPageEnd(int $page);
 ```
 
 
+## Clear specified page range
+
+```php
+$ghostscript->clearPageRange();
+```
+
+
 ## Subsample antialiasing
 
 These options control the use of subsample antialiasing. Their use is highly recommended for producing high quality rasterizations of the input files. 
